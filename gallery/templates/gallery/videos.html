@@ -1,0 +1,67 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="videos-section" style="padding-top: 120px;">
+    <div class="container">
+        <div class="section-header">
+            <h1 class="section-title">Our Video Gallery</h1>
+            <p class="section-subtitle">Watch our latest video productions and event highlights</p>
+        </div>
+
+        <!-- Video Type Filter -->
+        <div class="video-filter">
+            <a href="{% url 'videos' %}?type=wedding" class="filter-btn {% if selected_type == 'wedding' %}active{% endif %}">Wedding Videos</a>
+            <a href="{% url 'videos' %}?type=birthday" class="filter-btn {% if selected_type == 'birthday' %}active{% endif %}">Birthday Videos</a>
+            <a href="{% url 'videos' %}?type=event" class="filter-btn {% if selected_type == 'event' %}active{% endif %}">Event Videos</a>
+        </div>
+
+        <!-- Video Grid -->
+        <div class="video-grid">
+            {% for video in videos %}
+            <div class="video-card">
+                <div class="video-thumbnail" data-video-url="{{ video.video_url }}">
+                    <img src="{% if video.thumbnail %}{{ video.thumbnail.url }}{% else %}{% static 'images/default-video.jpg' %}{% endif %}" alt="{{ video.title }}">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <h3>{{ video.title }}</h3>
+                    <span class="video-type">{{ video.get_video_type_display }}</span>
+                    {% if video.description %}
+                    <p class="video-description">{{ video.description }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <i class="fas fa-video" style="font-size: 4rem; color: var(--gray-light); margin-bottom: 1rem;"></i>
+                <h3>No videos found</h3>
+                <p>No videos available in this category yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<style>
+.videos-section {
+    background: var(--light);
+}
+
+.video-filter {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.video-description {
+    margin-top: 0.5rem;
+    color: var(--gray);
+    font-size: 0.9rem;
+}
+</style>
+{% endblock %}

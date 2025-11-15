@@ -1,0 +1,93 @@
+/* Custom Admin Panel Styles */
+#header {
+ background: #e91e63;
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+ background: #c2185b;
+}
+
+.selector-chosen h2 {
+ background: #e91e63 !important;
+}
+
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+ background: #e91e63;
+}
+
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover {
+ background: #c2185b;
+}
+
+/* Improve admin dashboard */
+.dashboard .module table th {
+ width: 100%;
+}
+
+.dashboard .module table td {
+ white-space: nowrap;
+}
+
+.dashboard .module table td a {
+ display: block;
+ padding-right: .6em;
+}
+
+
+
+/* Modern Admin Panel */
+#header {
+ background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+ color: white;
+}
+
+#branding h1 {
+ color: white;
+ font-weight: 700;
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+ background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+}
+
+.selector-chosen h2 {
+ background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important;
+}
+
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+ background: var(--primary);
+ border-radius: var(--radius);
+}
+
+.button:hover,
+input[type=submit]:hover,
+input[type=button]:hover {
+ background: var(--primary-dark);
+}
+
+div.breadcrumbs {
+ background: var(--gray-light);
+ color: var(--dark);
+}
+
+.login .form-row {
+ padding: 10px 0;
+}
+
+.login .submit-row {
+ padding: 20px 0 0;
+}

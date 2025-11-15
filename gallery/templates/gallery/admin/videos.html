@@ -1,0 +1,103 @@
+{% extends 'gallery/admin/base.html' %}
+{% load static %}
+
+{% block page_title %}Manage Videos{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <div class="page-header">
+        <h1>Videos Management</h1>
+        <a href="{% url 'admin_add_video' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Add Video
+        </a>
+    </div>
+
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Thumbnail</th>
+                    <th>Title</th>
+                    <th>Type</th>
+                    <th>Video URL</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for video in videos %}
+                <tr>
+                    <td>
+                        {% if video.thumbnail %}
+                        <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}" class="table-image">
+                        {% else %}
+                        <div class="no-thumbnail">No Image</div>
+                        {% endif %}
+                    </td>
+                    <td>{{ video.title }}</td>
+                    <td>
+                        <span class="badge badge-secondary">{{ video.get_video_type_display }}</span>
+                    </td>
+                    <td>
+                        <a href="{{ video.video_url }}" target="_blank" class="text-primary">
+                            View Video
+                        </a>
+                    </td>
+                    <td>{{ video.upload_date|date:"M d, Y" }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'admin_edit_video' video.id %}" class="btn btn-sm btn-edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button class="btn btn-sm btn-delete" onclick="confirmDelete('{% url 'admin_delete_video' video.id %}', '{{ video.title }}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="no-data">No videos found. <a href="{% url 'admin_add_video' %}">Add your first video</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Confirm Delete</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete "<span id="deleteItemName"></span>"?</p>
+            <p class="text-warning">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <form id="deleteForm" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+.no-thumbnail {
+    width: 50px;
+    height: 50px;
+    background: var(--gray-light);
+    border-radius: 0.375rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray);
+    font-size: 0.75rem;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'gallery/admin/base.html' %}
+{% load static %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon photo">
+                <i class="fas fa-images"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ total_photos }}</h3>
+                <p>Total Photos</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon video">
+                <i class="fas fa-video"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ total_videos }}</h3>
+                <p>Total Videos</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon booking">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ total_bookings }}</h3>
+                <p>Total Bookings</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon pending">
+                <i class="fas fa-clock"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ pending_bookings }}</h3>
+                <p>Pending Bookings</p>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon category">
+                <i class="fas fa-tags"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ total_categories }}</h3>
+                <p>Categories</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Bookings -->
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h2>Recent Bookings</h2>
+            <a href="{% url 'admin_bookings' %}" class="btn btn-outline">View All</a>
+        </div>
+        
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Service</th>
+                        <th>Event Date</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in recent_bookings %}
+                    <tr>
+                        <td>{{ booking.name }}</td>
+                        <td>{{ booking.get_service_type_display }}</td>
+                        <td>{{ booking.event_date }}</td>
+                        <td>
+                            <span class="status-badge {% if booking.is_confirmed %}confirmed{% else %}pending{% endif %}">
+                                {{ booking.is_confirmed|yesno:"Confirmed,Pending" }}
+                            </span>
+                        </td>
+                        <td>{{ booking.created_at|date:"M d, Y" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="no-data">No bookings found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="dashboard-section">
+        <h2>Quick Actions</h2>
+        <div class="quick-actions">
+            <a href="{% url 'admin_add_photo' %}" class="quick-action">
+                <i class="fas fa-plus"></i>
+                <span>Add Photo</span>
+            </a>
+            <a href="{% url 'admin_add_video' %}" class="quick-action">
+                <i class="fas fa-plus"></i>
+                <span>Add Video</span>
+            </a>
+            <a href="{% url 'admin_add_category' %}" class="quick-action">
+                <i class="fas fa-plus"></i>
+                <span>Add Category</span>
+            </a>
+            <a href="{% url 'admin_bookings' %}" class="quick-action">
+                <i class="fas fa-calendar"></i>
+                <span>Manage Bookings</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

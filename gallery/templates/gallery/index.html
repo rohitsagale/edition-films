@@ -1,0 +1,192 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">Capture Your <span class="highlight">Beautiful Moments</span></h1>
+        <p class="hero-subtitle">Professional photography & videography services that tell your unique story with creativity and passion</p>
+        <div class="hero-buttons">
+            <a href="{% url 'booking' %}" class="btn btn-primary">
+                <i class="fas fa-calendar-check"></i>
+                Book Session
+            </a>
+            <a href="{% url 'gallery' %}" class="btn btn-secondary">
+                <i class="fas fa-images"></i>
+                View Gallery
+            </a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <div class="floating-card card-1">
+            <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Wedding">
+            <span>Wedding</span>
+        </div>
+        <div class="floating-card card-2">
+            <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Portrait">
+            <span>Portrait</span>
+        </div>
+        <div class="floating-card card-3">
+            <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Event">
+            <span>Events</span>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Projects Completed</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">250+</div>
+                <div class="stat-label">Happy Clients</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">5+</div>
+                <div class="stat-label">Years Experience</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Customer Support</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Our Premium Services</h2>
+            <p class="section-subtitle">Professional photography services for all your special moments</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-ring"></i>
+                </div>
+                <h3>Wedding Photography</h3>
+                <p>Capture the most beautiful day of your life with our professional wedding photography services.</p>
+                <ul class="service-features">
+                    <li>Pre-wedding Shoot</li>
+                    <li>Candid Photography</li>
+                    <li>Traditional Coverage</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-birthday-cake"></i>
+                </div>
+                <h3>Birthday Events</h3>
+                <p>Make your celebrations memorable with our creative birthday event photography.</p>
+                <ul class="service-features">
+                    <li>Theme-based Shoots</li>
+                    <li>Candid Moments</li>
+                    <li>Group Photos</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3>Portrait Sessions</h3>
+                <p>Professional portrait sessions that bring out your personality and style.</p>
+                <ul class="service-features">
+                    <li>Studio Setup</li>
+                    <li>Outdoor Locations</li>
+                    <li>Multiple Outfits</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3>Video Production</h3>
+                <p>High-quality video coverage for all your events with professional editing.</p>
+                <ul class="service-features">
+                    <li>4K Quality</li>
+                    <li>Professional Editing</li>
+                    <li>Drone Shots</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Gallery -->
+<section class="gallery-preview">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Featured Gallery</h2>
+            <p class="section-subtitle">A glimpse of our recent work</p>
+        </div>
+        <div class="gallery-grid">
+            {% for photo in featured_photos %}
+            <div class="gallery-item">
+                <img src="{{ photo.image.url }}" alt="{{ photo.title }}">
+                <div class="gallery-overlay">
+                    <div class="gallery-info">
+                        <h3>{{ photo.title }}</h3>
+                        <p>{{ photo.category.name }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="section-cta">
+            <a href="{% url 'gallery' %}" class="btn btn-outline">
+                <i class="fas fa-arrow-right"></i>
+                View Full Gallery
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Video Showcase -->
+<section class="video-showcase">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Video Highlights</h2>
+            <p class="section-subtitle">Watch our latest video productions</p>
+        </div>
+        <div class="video-grid">
+            {% for video in wedding_videos %}
+            <div class="video-card">
+                <div class="video-thumbnail">
+                    <img src="{% if video.thumbnail %}{{ video.thumbnail.url }}{% else %}{% static 'images/default-video.jpg' %}{% endif %}" alt="{{ video.title }}">
+                    <div class="play-button">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <h3>{{ video.title }}</h3>
+                    <span class="video-type">{{ video.get_video_type_display }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Capture Your Special Moments?</h2>
+            <p>Book your session today and let us create beautiful memories that last forever.</p>
+            <a href="{% url 'booking' %}" class="btn btn-primary btn-large">
+                <i class="fas fa-calendar-plus"></i>
+                Book Now
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

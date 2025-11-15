@@ -1,0 +1,73 @@
+{% extends 'gallery/admin/base.html' %}
+{% load static %}
+
+{% block page_title %}Manage Categories{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <div class="page-header">
+        <h1>Categories Management</h1>
+        <a href="{% url 'admin_add_category' %}" class="btn btn-primary">
+            <i class="fas fa-plus"></i>
+            Add Category
+        </a>
+    </div>
+
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Photo Count</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td>{{ category.name }}</td>
+                    <td>{{ category.description|truncatewords:10 }}</td>
+                    <td>{{ category.photo_set.count }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{% url 'admin_edit_category' category.id %}" class="btn btn-sm btn-edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <button class="btn btn-sm btn-delete" onclick="confirmDelete('{% url 'admin_delete_category' category.id %}', '{{ category.name }}')">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="no-data">No categories found. <a href="{% url 'admin_add_category' %}">Add your first category</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Confirm Delete</h3>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to delete category "<span id="deleteItemName"></span>"?</p>
+            <p class="text-warning">This action cannot be undone.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <form id="deleteForm" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

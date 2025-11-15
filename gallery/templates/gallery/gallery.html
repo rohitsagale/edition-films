@@ -1,0 +1,173 @@
+{% extends 'gallery/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="gallery-section" style="padding-top: 120px;">
+    <div class="container">
+        <div class="section-header">
+            <h1 class="section-title">Our Photo Gallery</h1>
+            <p class="section-subtitle">Explore our collection of beautiful moments captured with passion</p>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="category-filter">
+            <a href="{% url 'gallery' %}" class="filter-btn {% if not selected_category %}active{% endif %}">All Photos</a>
+            {% for category in categories %}
+            <a href="{% url 'gallery' %}?category={{ category.id }}" 
+               class="filter-btn {% if selected_category == category.id|stringformat:'i' %}active{% endif %}">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Photo Grid -->
+        <div class="gallery-grid">
+            {% for photo in page_obj %}
+            <div class="gallery-item">
+                <img src="{{ photo.image.url }}" alt="{{ photo.title }}" loading="lazy">
+                <div class="gallery-overlay">
+                    <div class="gallery-info">
+                        <h3>{{ photo.title }}</h3>
+                        <p>{{ photo.category.name }}</p>
+                        {% if photo.description %}
+                        <p class="photo-description">{{ photo.description|truncatewords:10 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <i class="fas fa-images" style="font-size: 4rem; color: var(--gray-light); margin-bottom: 1rem;"></i>
+                <h3>No photos found</h3>
+                <p>No photos available in this category yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if page_obj.has_other_pages %}
+        <div class="pagination">
+            {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="page-btn">
+                <i class="fas fa-chevron-left"></i> Previous
+            </a>
+            {% endif %}
+
+            <div class="page-numbers">
+                {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                <span class="page-number active">{{ num }}</span>
+                {% else %}
+                <a href="?page={{ num }}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="page-number">{{ num }}</a>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}{% if selected_category %}&category={{ selected_category }}{% endif %}" class="page-btn">
+                Next <i class="fas fa-chevron-right"></i>
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+.gallery-section {
+    background: var(--light);
+}
+
+.category-filter {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid var(--gray-light);
+    border-radius: 25px;
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--gray);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+.page-btn {
+    padding: 10px 20px;
+    background: white;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.page-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.page-numbers {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.page-number {
+    padding: 10px 15px;
+    background: white;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--radius);
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.page-number.active,
+.page-number:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.photo-description {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    opacity: 0.8;
+}
+</style>
+{% endblock %}
